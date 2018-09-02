@@ -27,6 +27,6 @@ export default reducerWithInitialState(INITIAL_STATE)
 	}))
 	.build();
 
-// EFFECTS
+// EPICS
 
 export const epics = combineEpics();

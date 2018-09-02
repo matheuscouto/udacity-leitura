@@ -10,22 +10,38 @@ import appStateReducer, {
 	IState as IAppStateState,
 } from './app/state';
 
+import forumCategoriesReducer, {
+	epics as forumCategoriesEpics,
+	IState as IForumCategoriesState,
+} from './forum/categories';
+
+import forumPostsReducer, {
+	epics as forumPostsEpics,
+	IState as IForumPostsState,
+} from './forum/posts';
+
 // STORE INTERFACE
 
 export interface IRootState {
 	appState: IAppStateState,
+	forumCategories: IForumCategoriesState,
+	forumPosts: IForumPostsState,
 }
 
 // COMBINED REDUCERS
 
 const rootReducer = combineReducers<IRootState>({
 	appState: appStateReducer,
+	forumCategories: forumCategoriesReducer,
+	forumPosts: forumPostsReducer,
 });
 
 // COMBINED EPICS
 
 const rootEpic = combineEpics(
 	appStateEpics,
+	forumCategoriesEpics,
+	forumPostsEpics,
 );
 
 
