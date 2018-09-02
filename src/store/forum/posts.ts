@@ -1,4 +1,4 @@
-import { combineEpics, Epic } from 'redux-observable';
+import * as _ from 'lodash';
 import { from, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, mergeMapTo } from 'rxjs/operators';
 import actionCreatorFactory from 'typescript-fsa';
@@ -32,13 +32,19 @@ export const deleteComment = actionCreator.async<string, undefined, any>('DELETE
 // STATE
 
 export interface IState {
-	posts?: PostType[];
+	posts?: {
+		[id: string]: PostType,
+	};
 	postsByCategory?: {
-		[categoryName: string]: PostType[],
+		[categoryName: string]: {
+			[id: string]: PostType,
+		},
 	};
 	onDisplay?: {
 		post?: PostType,
-		comments?: CommentType[]
+		comments?: {
+			[id: string]: CommentType,
+		},
 	};
 	commentDetail?: CommentType;
 }
@@ -48,19 +54,28 @@ const INITIAL_STATE: IState = {};
 // REDUCER
 
 export default reducerWithInitialState(INITIAL_STATE)
-	.case(getPosts.done, (state: IState, { result: posts }) => ({ ...state, posts}))
-	.case(getPostsByCategory.done, (state: IState, { params: category, result: posts }) => ({
+	.case(getPosts.done, (state: IState, { result: posts }) => {
+		const normalizedPosts = _.fromPairs(_.map(posts,(post:PostType) => [post.id,_.omit(post, 'id')]))
+		return ({ 
+			...state,
+			posts: normalizedPosts,
+		})
+	})
+	.case(getPostsByCategory.done, (state: IState, { params: category, result: posts }) => {
+		const normalizedPosts = _.fromPairs(_.map(posts,(post:PostType) => [post.id,_.omit(post, 'id')]))
+		return ({
 			...state,
 			postsByCategory: {
-				[category]: posts
-			}
-		}))
+				[category]: normalizedPosts
+			},
+		})
+	})
 	.case(getPostDetails.done, (state: IState, { result: post }) => ({
 		...state,
 		onDisplay: {
 			...state.onDisplay,
 			post: { ...post },
-		}
+			},
 	}))
 	.case(getPostComments.done, (state: IState, { result: comments }) => ({
 		...state,
