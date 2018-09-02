@@ -1,11 +1,10 @@
 import { combineEpics, Epic } from 'redux-observable';
 import { from, of } from 'rxjs';
-import { catchError, filter, map, mapTo, mergeMapTo } from 'rxjs/operators';
+import { catchError, filter, map, mergeMapTo } from 'rxjs/operators';
 import actionCreatorFactory from 'typescript-fsa';
 import { reducerWithInitialState } from 'typescript-fsa-reducers/dist';
 
 import ApiSDK from '../../services/api';
-import { init } from '../app/state';
 
 
 // ACTIONS
@@ -30,8 +29,7 @@ export default reducerWithInitialState(INITIAL_STATE)
 // EPICS
 
 const getCategoriesEpic: Epic = (action$) => action$.pipe(
-	filter(init.match),
-	mapTo(getCategories.started),
+	filter(getCategories.started.match),
 	mergeMapTo(from(ApiSDK.getCategories()).pipe(
 		map((categories) => getCategories.done({ result: categories})),
 		catchError((error) => of(getCategories.failed({ error: error.code }))),

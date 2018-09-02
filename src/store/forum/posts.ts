@@ -7,7 +7,7 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers/dist';
 import { Comment as CommentType, Post as PostType } from '../../declarations';
 
 import ApiSDK from '../../services/api';
-import { init } from '../app/state';
+
 
 const actionCreator = actionCreatorFactory('FORUM::POSTS');
 
@@ -78,8 +78,7 @@ export default reducerWithInitialState(INITIAL_STATE)
 // EPICS
 
 const getPostsEpic: Epic = (action$) => action$.pipe(
-	filter(submitPost.done.match),
-	mapTo(getPosts.started()),
+	filter(getPosts.started.match),
 	mergeMapTo(from(ApiSDK.getPosts()).pipe(
 		map((posts) => getPosts.done({ result: posts })),
 		catchError((error) => of(getPosts.failed({ error: error.code }))),
@@ -87,8 +86,7 @@ const getPostsEpic: Epic = (action$) => action$.pipe(
 );
 
 const getPostsByCategoryEpic: Epic = (action$) => action$.pipe(
-	filter(init.match || submitPost.done.match),
-	mapTo(getPostsByCategory.started('react')),
+	filter(getPostsByCategory.started.match),
 	mergeMap(({payload: category}) => from(ApiSDK.getPostsByCategory(category)).pipe(
 		map((posts) => getPostsByCategory.done({ params: category , result: posts})),
 		catchError((error) => of(getPostsByCategory.failed({ params: category, error: error.code }))),
