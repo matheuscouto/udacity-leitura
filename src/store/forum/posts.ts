@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { combineEpics } from 'redux-observable';
 import { from, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, mergeMapTo } from 'rxjs/operators';
 import actionCreatorFactory from 'typescript-fsa';
@@ -6,6 +7,7 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers/dist';
 
 import { Comment as CommentType, Post as PostType } from '../../declarations';
 
+import { Epic, Selector } from '../';
 import ApiSDK from '../../services/api';
 
 
@@ -32,35 +34,51 @@ export const deleteComment = actionCreator.async<string, undefined, any>('DELETE
 // STATE
 
 export interface IState {
+	isRequestingPostList?: boolean;
 	posts?: {
 		[id: string]: PostType,
 	};
+
+	isRequestingPostsByCategory?: boolean;
 	postsByCategory?: {
 		[categoryName: string]: {
 			[id: string]: PostType,
 		},
 	};
+
+	isRequestingPostDetails?: boolean;
+	isRequestingPostComments?: boolean;
 	onDisplay?: {
 		post?: PostType,
 		comments?: {
 			[id: string]: CommentType,
 		},
 	};
+
+	isRequestingCommentDetails?: boolean;
 	commentDetail?: CommentType;
 }
 
 const INITIAL_STATE: IState = {};
 
+// SELECTORS
+
+export const selectAllPosts: Selector<any> = ({ forumPosts }) => forumPosts.posts;
+export const selectIsRequestingPostList: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostList || false;
+
 // REDUCER
 
 export default reducerWithInitialState(INITIAL_STATE)
+	.case(getPosts.started, (state: IState) => ({ ...state, isRequestingPostList: true }))
 	.case(getPosts.done, (state: IState, { result: posts }) => {
 		const normalizedPosts = _.fromPairs(_.map(posts,(post:PostType) => [post.id,_.omit(post, 'id')]))
 		return ({ 
 			...state,
 			posts: normalizedPosts,
+			isRequestingPostList: false,
 		})
 	})
+	.case(getPostsByCategory.started, (state: IState) => ({ ...state, isRequestingPostsByCategory: true }))
 	.case(getPostsByCategory.done, (state: IState, { params: category, result: posts }) => {
 		const normalizedPosts = _.fromPairs(_.map(posts,(post:PostType) => [post.id,_.omit(post, 'id')]))
 		return ({
@@ -68,25 +86,34 @@ export default reducerWithInitialState(INITIAL_STATE)
 			postsByCategory: {
 				[category]: normalizedPosts
 			},
+			isRequestingPostsByCategory: false,
 		})
 	})
+	.case(getPostDetails.started, (state: IState) => ({ ...state, isRequestingPostDetails: true }))
 	.case(getPostDetails.done, (state: IState, { result: post }) => ({
-		...state,
-		onDisplay: {
-			...state.onDisplay,
-			post: { ...post },
+			...state,
+			onDisplay: {
+				...state.onDisplay,
+				post: { ...post },
 			},
+			isRequestingPostDetails: false,
 	}))
-	.case(getPostComments.done, (state: IState, { result: comments }) => ({
-		...state,
-		onDisplay: {
-			...state.onDisplay,
-			comments: { ...comments },
+	.case(getPostComments.started, (state: IState) => ({ ...state, isRequestingPostComments: true }))
+	.case(getPostComments.done, (state: IState, { result: comments }) => {
+		const normalizedComments = _.fromPairs(_.map(comments,(comment:CommentType) => [comment.id,_.omit(comment, 'id')]))
+		return ({
+			...state,
+			onDisplay: {
+				...state.onDisplay,
+				comments: normalizedComments,
+			},
+			isRequestingPostComments: false,
 		}
-	}))
+	)})
+	.case(getCommentDetails.started, (state: IState) => ({ ...state, isRequestingCommentDetails: true }))
 	.case(getCommentDetails.done, (state: IState, { result: comment }) => ({
 		...state,
-		commentDetail: { ...comment }
+		commentDetail: { ...comment },
 	}))
 	.build();
 
