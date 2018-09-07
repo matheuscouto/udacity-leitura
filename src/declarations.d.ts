@@ -13,9 +13,11 @@ export interface Post {
     // Deve ser uma das categorias fornecidas pelo servidor
     category: string,
     // Votos líquidos que a postagem recebeu (default: 1)
-    voteScore?: number,
+    voteScore: number,
     // Marcado se o post foi 'deletado' (sem acesso no front end), (default: false)
-    deleted?: boolean,
+		deleted: boolean,
+		// Numero de comentários no post
+		commentCount: number,
 }
 
 export interface Comment {
@@ -31,9 +33,9 @@ export interface Comment {
     // Autor do comentário
     author: string,
     // Votos líquidos que a postagem recebeu (default: 1)
-    voteScore?: number,
+    voteScore: number,
     // Marcado se o post foi 'deletado' (sem acesso no front end), (default: false)
-    deleted?: boolean,
+    deleted: boolean,
     // Marcado quando o post pai foi deletado, mas o comentário em si não foi.
     parentDeleted?: boolean,
 }
