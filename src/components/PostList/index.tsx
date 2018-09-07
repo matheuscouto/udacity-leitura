@@ -4,6 +4,8 @@ import { map } from 'lodash';
 
 import { Post as PostType } from '../../declarations';
 
+import PostItem from './PostItem';
+
 interface IProps {
 	postList: {
 		[id: string]: PostType,
@@ -13,11 +15,11 @@ interface IProps {
 class PostList extends React.PureComponent<IProps> {
 	public render() {
 		return(
-			<ul>
+			<div className="post-list">
 				{
-					map(this.props.postList,post =><li>{post.title}<br/>{post.body}<br/>{post.author}</li>)
+					map(this.props.postList,post => <PostItem post={post} />)
 				}
-			</ul>
+			</div>
 		);
 	}
 }

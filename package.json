@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "firebase": "^5.4.1",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
@@ -22,17 +23,20 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "build-css": "node-sass-chokidar ./src/styles/main.scss ./src/styles/main.css",
+    "watch-css": "npm run build-css && node-sass-chokidar ./src/styles/main.scss ./src/styles/main.css --watch"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/jest": "^23.3.1",
+    "@types/lodash": "^4.14.116",
     "@types/node": "^10.9.2",
     "@types/react": "^16.4.12",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.3.0",
-    "@types/lodash": "^4.14.116",
+    "node-sass-chokidar": "^1.3.3",
     "redux-devtools": "^3.4.1",
     "typescript": "^3.0.1"
   }

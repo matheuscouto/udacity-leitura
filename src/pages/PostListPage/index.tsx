@@ -40,14 +40,13 @@ class PostListPage extends React.PureComponent<IMapStateToProps & IMapDispatchTo
 	public render() {
 		const { posts, isRequestingPostList } = this.props;
 		return(
-			<ul>
-			{
-				isRequestingPostList
-				? <div>Loading...</div>
-				: <PostList postList={posts} />
-			}
-				
-			</ul>
+			<div>
+				{
+					isRequestingPostList
+					? <div>Loading...</div>
+					: <PostList postList={posts} />
+				}
+			</div>
 		);
 	}
 }
