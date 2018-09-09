@@ -34,7 +34,7 @@ export const deleteComment = actionCreator.async<string, undefined, any>('DELETE
 // STATE
 
 export interface IState {
-	isRequestingPostList?: boolean;
+	isRequestingPostList: boolean;
 	posts?: {
 		[id: string]: PostType,
 	};
@@ -48,7 +48,8 @@ export interface IState {
 
 	isRequestingPostDetails?: boolean;
 	isRequestingPostComments?: boolean;
-	onDisplay?: {
+	isRequestingPostAndCommentDetails: boolean;
+	onDisplay: {
 		post?: PostType,
 		comments?: {
 			[id: string]: CommentType,
@@ -59,12 +60,18 @@ export interface IState {
 	commentDetail?: CommentType;
 }
 
-const INITIAL_STATE: IState = {};
+const INITIAL_STATE: IState = {
+	isRequestingPostAndCommentDetails: false,
+	isRequestingPostList: false,
+	onDisplay: {}
+};
 
 // SELECTORS
 
 export const selectAllPosts: Selector<any> = ({ forumPosts }) => forumPosts.posts;
-export const selectIsRequestingPostList: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostList || false;
+export const selectIsRequestingPostList: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostList;
+export const selectIsRequestingPostAndCommentDetails: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostAndCommentDetails;
+export const selectPostOnDisplayWithComments: Selector<{post?: PostType, comments?: {[id: string]: CommentType }}> = ({ forumPosts }) => forumPosts.onDisplay;
 
 // REDUCER
 
@@ -89,15 +96,15 @@ export default reducerWithInitialState(INITIAL_STATE)
 			isRequestingPostsByCategory: false,
 		})
 	})
-	.case(getPostDetails.started, (state: IState) => ({ ...state, isRequestingPostDetails: true }))
+	.case(getPostDetails.started, (state: IState) => ({ ...state, isRequestingPostDetails: true, isRequestingPostAndCommentDetails: true }))
 	.case(getPostDetails.done, (state: IState, { result: post }) => ({
-			...state,
-			onDisplay: {
-				...state.onDisplay,
-				post: { ...post },
-			},
-			isRequestingPostDetails: false,
-	}))
+		...state,
+		onDisplay: {
+			...state.onDisplay,
+			post: { ...post },
+		},
+		isRequestingPostDetails: false,
+}))
 	.case(getPostComments.started, (state: IState) => ({ ...state, isRequestingPostComments: true }))
 	.case(getPostComments.done, (state: IState, { result: comments }) => {
 		const normalizedComments = _.fromPairs(_.map(comments,(comment:CommentType) => [comment.id,_.omit(comment, 'id')]))
@@ -108,6 +115,7 @@ export default reducerWithInitialState(INITIAL_STATE)
 				comments: normalizedComments,
 			},
 			isRequestingPostComments: false,
+			isRequestingPostAndCommentDetails: false,
 		}
 	)})
 	.case(getCommentDetails.started, (state: IState) => ({ ...state, isRequestingCommentDetails: true }))
@@ -176,7 +184,8 @@ const deletePostEpic: Epic = (action$) => action$.pipe(
 );
 
 const getPostCommentsEpic: Epic = (action$) => action$.pipe(
-	filter(getPostComments.started.match),
+	filter(getPostDetails.done.match),
+	map(({payload:{result:post}}) => getPostComments.started(post.id)),
 	mergeMap(({payload: postId}) => from(ApiSDK.getPostComments(postId)).pipe(
 		map((comments) => getPostComments.done({ params: postId , result: comments})),
 		catchError((error) => of(getPostComments.failed({ params: postId, error: error.code }))),
