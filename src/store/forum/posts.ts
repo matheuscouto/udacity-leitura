@@ -159,6 +159,11 @@ const getPostDetailsEpic: Epic = (action$) => action$.pipe(
 	)),
 );
 
+const dispatchGetPostDetailsAfterSubmitCommentEpic: Epic = (action$) => action$.pipe(
+	filter(submitComment.done.match),
+	map(({ payload: { params: comment}}) => getPostDetails.started(comment.parentId))
+);
+
 const votePostEpic: Epic = (action$) => action$.pipe(
 	filter(votePost.started.match),
 	mergeMap(({payload: {postId, option}}) => from(ApiSDK.votePost(postId, option)).pipe(
@@ -247,4 +252,5 @@ export const epics = combineEpics(
 	getCommentDetailsEpic,
 	editCommentEpic,
 	deleteCommentEpic,
+	dispatchGetPostDetailsAfterSubmitCommentEpic,
 );

@@ -84,58 +84,137 @@
           text-decoration: underline;
           cursor: pointer; }
 
-.post-list {
-  display: flex;
-  flex-direction: column;
-  width: 600px; }
-  .post-list > div {
-    height: 85px;
-    width: 100%;
-    padding: 20px;
-    margin-bottom: 2px;
+.post-details {
+  width: 600px;
+  padding: 20px 20px 20px 0;
+  background-color: white;
+  display: flex; }
+  .post-details > div:first-of-type {
+    width: 12.5%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    background-color: white; }
-    .post-list > div > h3 {
-      font-weight: 300;
+    align-items: center; }
+    .post-details > div:first-of-type > i {
+      font-size: 35px;
+      color: #E0E4E7;
+      line-height: 15px;
       cursor: pointer; }
-      .post-list > div > h3:hover {
+      .post-details > div:first-of-type > i:first-of-type {
+        margin-top: 15px; }
+        .post-details > div:first-of-type > i:first-of-type:hover {
+          color: #54B088; }
+      .post-details > div:first-of-type > i:last-of-type:hover {
+        color: #EF7D75; }
+    .post-details > div:first-of-type > h1 {
+      font-size: 35px;
+      color: #78A8EE;
+      font-weight: 500; }
+  .post-details > div:last-of-type {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; }
+    .post-details > div:last-of-type > h2 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 10px; }
+    .post-details > div:last-of-type > div:first-of-type {
+      font-size: 12px;
+      color: #bcc2c4; }
+      .post-details > div:last-of-type > div:first-of-type span {
+        color: #59b2db;
+        cursor: pointer;
         text-decoration: underline; }
-    .post-list > div > div:first-of-type > span {
-      font-size: 14px;
-      margin-right: 8px; }
-      .post-list > div > div:first-of-type > span > i {
-        margin-right: 4px; }
-      .post-list > div > div:first-of-type > span:first-of-type {
-        color: #78A8EE; }
-        .post-list > div > div:first-of-type > span:first-of-type.no-comments {
-          color: #A4B3C1; }
-      .post-list > div > div:first-of-type > span:last-of-type {
-        color: #54B088; }
-        .post-list > div > div:first-of-type > span:last-of-type.downvoted {
-          color: #EF7D75; }
-        .post-list > div > div:first-of-type > span:last-of-type.no-votes {
-          color: #A4B3C1; }
-    .post-list > div > div:last-of-type {
-      width: 100%;
+    .post-details > div:last-of-type > div:nth-of-type(2) {
+      height: 18px;
+      margin: 10px 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center; }
-      .post-list > div > div:last-of-type > div {
-        height: 18px;
+      justify-content: center;
+      align-items: center;
+      padding: 0 4px;
+      border: 1px solid #FCE7B4;
+      background-color: #FFF3D6;
+      border-radius: 3px;
+      color: #D6BA79;
+      font-size: 11px;
+      font-weight: 300; }
+    .post-details > div:last-of-type > hr {
+      width: 100%;
+      border: none;
+      border-top: 1px dashed #E0E4E7;
+      height: 1px;
+      color: white;
+      background-color: white;
+      margin: 5px 0 15px 0; }
+    .post-details > div:last-of-type > p {
+      font-size: 13px;
+      line-height: 18px;
+      margin-bottom: 20px;
+      text-align: justify; }
+    .post-details > div:last-of-type > h3 {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 5px; }
+    .post-details > div:last-of-type > div:last-of-type {
+      display: flex;
+      flex-direction: column;
+      width: 100%; }
+      .post-details > div:last-of-type > div:last-of-type > div {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 4px;
-        border: 1px solid #FCE7B4;
-        background-color: #FFF3D6;
-        border-radius: 3px;
-        color: #D6BA79;
-        font-size: 11px;
-        font-weight: 300; }
-      .post-list > div > div:last-of-type > span {
-        color: #A4B3C1;
-        font-size: 11px;
-        font-weight: 300; }
+        margin-bottom: 20px; }
+        .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type {
+          width: 60px;
+          margin: 0 5px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center; }
+          .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type > i {
+            font-size: 25px;
+            color: #E0E4E7;
+            line-height: 15px;
+            cursor: pointer; }
+            .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type > i:first-of-type {
+              margin-top: 5px; }
+              .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type > i:first-of-type:hover {
+                color: #54B088; }
+            .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type > i:last-of-type:hover {
+              color: #EF7D75; }
+          .post-details > div:last-of-type > div:last-of-type > div > div:first-of-type > p {
+            font-size: 20px;
+            color: #78A8EE;
+            font-weight: 500; }
+        .post-details > div:last-of-type > div:last-of-type > div > div:last-of-type {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start; }
+          .post-details > div:last-of-type > div:last-of-type > div > div:last-of-type > p {
+            font-size: 13px;
+            line-height: 18px; }
+            .post-details > div:last-of-type > div:last-of-type > div > div:last-of-type > p:first-of-type {
+              color: #98A5A5;
+              margin-bottom: 5px; }
+              .post-details > div:last-of-type > div:last-of-type > div > div:last-of-type > p:first-of-type > span {
+                color: #59b2db;
+                cursor: pointer; }
+      .post-details > div:last-of-type > div:last-of-type > textarea {
+        height: 18px;
+        font-size: 13px;
+        padding: 8px;
+        resize: none;
+        border: 2px solid whitesmoke; }
+      .post-details > div:last-of-type > div:last-of-type > button {
+        color: white;
+        background-color: #59b2db;
+        border: 0;
+        margin-top: 8px;
+        border-radius: 5px;
+        padding: 10px 10px;
+        width: 55px;
+        align-self: flex-end; }
+        .post-details > div:last-of-type > div:last-of-type > button:active {
+          background-color: #389ACA; }
+        .post-details > div:last-of-type > div:last-of-type > button:focus {
+          outline: none; }
