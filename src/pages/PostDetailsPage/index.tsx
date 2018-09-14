@@ -22,7 +22,7 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 	}
 
 	public componentDidMount() {
-		this.props.getPostDetails('8xf0y6ziyjabvozdd253nd');
+		this.props.getPostDetails(this.props.match.params.postId);
 	}
 
 	public render() {
