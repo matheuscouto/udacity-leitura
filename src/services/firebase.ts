@@ -1,23 +1,19 @@
-import * as firebase from 'firebase';
+import { auth, initializeApp } from 'firebase';
 import { Observable } from 'rxjs';
 
 const config = {
-	apiKey: "AIzaSyCe9XJ---EXAMPLE---SQFBe20s",
-	authDomain: "PROJECT-NAME.firebaseapp.com",
-	databaseURL: "https://PROJECT-NAME.firebaseio.com",
-	projectId: "PROJECT-NAME",
-	storageBucket: "PROJECT-NAME.appspot.com",
-	messagingSenderId: "XXXXXXXXXXXX"
+	apiKey: "AIzaSyAeTaUMJuc-bkiHWPhiG7NmdeLn7JHBAEM",
+	authDomain: "udacity-leitura.firebaseapp.com",
+	databaseURL: "https://udacity-leitura.firebaseio.com",
+	projectId: "udacity-leitura",
+	storageBucket: "udacity-leitura.appspot.com",
+	messagingSenderId: "844422370440"
 };
 
-firebase.initializeApp(config);
+initializeApp(config);
 
-export default firebase;
-
-// OBSERVABLE EXAMPLE
-
-export const authStateObservable: Observable<{ uid: string } | null> = new Observable((observer) => {
-	return firebase.auth().onAuthStateChanged(
+export const SDKAuthStateObservable: Observable<{ uid: string } | null> = new Observable((observer) => {
+	return auth().onAuthStateChanged(
 		(user) => {
 			observer.next(user ? { uid: user.uid } : null);
 		},
@@ -26,9 +22,8 @@ export const authStateObservable: Observable<{ uid: string } | null> = new Obser
 	);
 });
 
-// UPDATE USER PASSWORD EXAMPLE
+export const SDKCreateUserWithEmailAndPassword = (email:string, password:string) => auth().createUserWithEmailAndPassword(email, password);
 
-export const updateUserPassword = async (newPassword:string):Promise<void> => {
-	const user = firebase.auth().currentUser
-	if(user) { await user.updatePassword(newPassword) }
-}
+export const SDKSignInWithEmailAndPassword = (email:string, password:string) => auth().signInWithEmailAndPassword(email, password);
+
+export const SDKSignOut = () => auth().signOut();
