@@ -17,7 +17,7 @@ class PostList extends React.PureComponent<IProps> {
 		return(
 			<div className="post-list">
 				{
-					map(this.props.postList,post => <PostItem post={post} />)
+					map(this.props.postList, (post, id) => <PostItem post={post} postId={id} key={id}/>)
 				}
 			</div>
 		);
