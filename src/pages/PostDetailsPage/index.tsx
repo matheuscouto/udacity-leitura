@@ -1,22 +1,31 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { map } from 'lodash';
+// UTIL LIBS
 import * as moment from 'moment';
 import * as uuid from 'uuid/v1';
 
+// INTERFACES
 import { Comment as CommentType, Post as PostType } from '../../declarations';
 import { IRootState } from '../../store';
 
 // ACTIONS AND SELECTORS
-import { getPostDetails, selectIsRequestingPostAndCommentDetails, selectPostOnDisplayWithComments, submitComment } from '../../store/forum/posts';
+import {
+	getPostDetails,
+	selectIsRequestingPostAndCommentDetails,
+	selectPostOnDisplayWithComments,
+	submitComment,
+	voteComment,
+	votePost,
+} from '../../store/forum/posts';
 
 // COMPONENTS
 import { CommentList } from '../../components';
 import Spinner from '../../utils/Spinner';
 
-class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatchToProps> {
+class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatchToProps & RouteComponentProps<{postId: string}> > {
 	public state = {
 		commentInput: '',
 	}
@@ -26,7 +35,10 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 	}
 
 	public render() {
-		const { isRequestingPostAndCommentDetails, onDisplay } = this.props;
+		const {
+			isRequestingPostAndCommentDetails,
+			onDisplay,
+		} = this.props;
 		// RENDER SPINNER ON LOADING POST AND COMMENTS
 		if (isRequestingPostAndCommentDetails || !onDisplay.post || !onDisplay.comments) {
 			return (<Spinner color="#A4B3C1" size={10} />)
@@ -38,9 +50,9 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 				{/* VOTE SESSION */}
 			
 				<div>
-					<i className="fas fa-sort-up"/>
+					<i className="fas fa-sort-up" onClick={this.handleVotePost('upVote')}/>
 					<h1>{onDisplay.post.voteScore}</h1>
-					<i className="fas fa-sort-down"/>
+					<i className="fas fa-sort-down" onClick={this.handleVotePost('downVote')}/>
 				</div>
 				<div>
 
@@ -83,7 +95,16 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 		}
 		this.props.submitComment(comment)
 	}
+
+	private handleVotePost = (option: 'upVote' | 'downVote') => () => {
+		const { postId } = this.props.match.params;
+		this.props.votePost(postId, option);
+	}
 }
+
+/* *************************** */
+//      MAP STATE TO PROPS     //
+/* *************************** */
 
 interface IMapStateToProps {
 	onDisplay: {
@@ -100,14 +121,23 @@ const mapStateToProps = (state: IRootState): IMapStateToProps => ({
 	isRequestingPostAndCommentDetails: selectIsRequestingPostAndCommentDetails(state),
 });
 
+
+/* *************************** */
+//    MAP DISPATCH TO PROPS    //
+/* *************************** */
+
 interface IMapDispatchToProps {
 	getPostDetails: (postId: string) => void;
 	submitComment: (comment: CommentType) => void;
+	votePost: (postId: string, option: 'upVote' | 'downVote') => void;
+	voteComment: (commentId: string, option: 'upVote' | 'downVote') => void;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	getPostDetails: (postId: string) => dispatch(getPostDetails.started(postId)),
-	submitComment: (comment: CommentType) => dispatch(submitComment.started(comment)),
+const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => ({
+	getPostDetails: (postId) => dispatch(getPostDetails.started(postId)),
+	submitComment: (comment) => dispatch(submitComment.started(comment)),
+	votePost: (postId, option) => dispatch(votePost.started({postId, option})),
+	voteComment: (commentId, option) => dispatch(voteComment.started({commentId, option})),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetailsPage);
