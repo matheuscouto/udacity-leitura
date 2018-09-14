@@ -1,9 +1,9 @@
-import CommentItem from './CommentItem';
+import CommentList from './CommentList';
 import ExampleComponent from './ExampleComponent';
 import PostList from './PostList';
 
 export {
 	ExampleComponent,
 	PostList,
-	CommentItem,
+	CommentList,
 };

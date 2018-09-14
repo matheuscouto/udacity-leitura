@@ -13,7 +13,7 @@ import { IRootState } from '../../store';
 import { getPostDetails, selectIsRequestingPostAndCommentDetails, selectPostOnDisplayWithComments, submitComment } from '../../store/forum/posts';
 
 // COMPONENTS
-import { CommentItem } from '../../components';
+import { CommentList } from '../../components';
 import Spinner from '../../utils/Spinner';
 
 class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatchToProps> {
@@ -54,15 +54,13 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 					<hr/>
 					<p>{onDisplay.post.body}</p>
 
-					{/* COMMENTS SESSION */}
-					
-					<h3>{onDisplay.post.commentCount} Comentários</h3>
-					<hr/>
-					<div>
-						{ map(onDisplay.comments, (comment) => <CommentItem comment={comment} key={comment.id}/>) }
-						<textarea maxLength={200} name="commentInput" value={this.state.commentInput} onChange={this.handleInputChange}/>
-						<button onClick={this.handleCommentSubmit}>Enviar</button>
-					</div>
+					<CommentList
+						commentCount={onDisplay.post.commentCount}
+						commentList={onDisplay.comments}
+						commentInputValue={this.state.commentInput}
+						handleInputChange={this.handleInputChange}
+						handleCommentSubmit={this.handleCommentSubmit}
+					/>
 				</div>
 			</div>
 		);
