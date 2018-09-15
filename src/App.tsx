@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <div className="App">
 				<Route exact path='/' component={PostListPage} />
-				<Route exact path='/postDetails' component={PostDetailsPage} />
+				<Route exact path='/post/:postId' component={PostDetailsPage} />
       </div>
     );
   }
