@@ -2,3 +2,8 @@
 @import 'module/header';
 @import 'module/postList';
 @import 'module/postDetails';
+@import 'module/intro';
+
+body, html {
+	height: 100%;
+}

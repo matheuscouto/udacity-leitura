@@ -21,6 +21,7 @@ import { IRootState } from '../../store';
 //  ACTIONS AND SELECTOS IMPORTS  //
 /* ****************************** */
 
+import { selectUsername } from '../../store/app/state';
 import {
 	getPostDetails,
 	selectIsRequestingPostAndCommentDetails,
@@ -103,14 +104,16 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 	}
 
 	private handleCommentSubmit = () => {
-		const comment:CommentType = {
-			id: uuid(),
-			parentId: this.props.onDisplay.post!.id,
-			timestamp: Date.now(),
-			body: this.state.commentInput,
-			author: 'thats me!',
+		if(this.props.username) {
+			const comment:CommentType = {
+				id: uuid(),
+				parentId: this.props.onDisplay.post!.id,
+				timestamp: Date.now(),
+				body: this.state.commentInput,
+				author: this.props.username,
+			}
+			this.props.submitComment(comment)
 		}
-		this.props.submitComment(comment)
 	}
 
 	private handleVotePost = (option: 'upVote' | 'downVote') => () => {
@@ -131,11 +134,13 @@ interface IMapStateToProps {
 		},
 	};
 	isRequestingPostAndCommentDetails: boolean;
+	username: string | undefined;
 };
 
 const mapStateToProps = (state: IRootState): IMapStateToProps => ({
 	onDisplay: selectPostOnDisplayWithComments(state),
 	isRequestingPostAndCommentDetails: selectIsRequestingPostAndCommentDetails(state),
+	username: selectUsername(state),
 });
 
 /* *************************** */

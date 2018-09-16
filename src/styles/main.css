@@ -218,3 +218,59 @@
           background-color: #389ACA; }
         .post-details > div:last-of-type > div:last-of-type > button:focus {
           outline: none; }
+
+.intro {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #DFE6EB; }
+  .intro > form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 70px; }
+    .intro > form > label {
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 400;
+      margin-left: 35px; }
+    .intro > form > div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px; }
+      .intro > form > div > input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid black;
+        margin-left: 20px;
+        font-size: 25px;
+        font-weight: 300;
+        width: 100%; }
+        .intro > form > div > input:focus {
+          outline: none;
+          outline: 0;
+          border-bottom: 1px solid transparent; }
+      .intro > form > div > button {
+        height: 40px;
+        margin-right: 20px;
+        margin-left: 35px;
+        font-size: 18px;
+        line-height: 25px;
+        border-radius: 4px;
+        border: 1px solid #52b4e3;
+        background-color: #52B4E3;
+        cursor: pointer;
+        box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1); }
+        .intro > form > div > button:hover {
+          background-color: #8DC6E6;
+          border-color: #8DC6E6; }
+        .intro > form > div > button > i {
+          margin: 0 5px; }
+      .intro > form > div > p {
+        font-size: 12px; }
+        .intro > form > div > p > span {
+          font-weight: bold; }
+
+body, html {
+  height: 100%; }
