@@ -3,15 +3,24 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-// UTIL LIBS
+/* *************************** */
+//          UTIL LIBS          //
+/* *************************** */
+
 import * as moment from 'moment';
 import * as uuid from 'uuid/v1';
 
-// INTERFACES
+/* *************************** */
+//         INTERFACES          //
+/* *************************** */
+
 import { Comment as CommentType, Post as PostType } from '../../declarations';
 import { IRootState } from '../../store';
 
-// ACTIONS AND SELECTORS
+/* ****************************** */
+//  ACTIONS AND SELECTOS IMPORTS  //
+/* ****************************** */
+
 import {
 	getPostDetails,
 	selectIsRequestingPostAndCommentDetails,
@@ -21,9 +30,16 @@ import {
 	votePost,
 } from '../../store/forum/posts';
 
-// COMPONENTS
+/* *************************** */
+//     COMPONENTS IMPORTS      //
+/* *************************** */
+
 import { CommentList } from '../../components';
 import Spinner from '../../utils/Spinner';
+
+/* *************************** */
+//       COMPONENT CLASS       //
+/* *************************** */
 
 class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatchToProps & RouteComponentProps<{postId: string}> > {
 	public state = {
@@ -39,8 +55,9 @@ class PostDetailsPage extends React.PureComponent<IMapStateToProps & IMapDispatc
 			isRequestingPostAndCommentDetails,
 			onDisplay,
 		} = this.props;
-		// RENDER SPINNER ON LOADING POST AND COMMENTS
-		if (isRequestingPostAndCommentDetails || !onDisplay.post || !onDisplay.comments) {
+
+		/* RENDER SPINNER ON LOADING POST AND COMMENTS */
+		if(isRequestingPostAndCommentDetails || !onDisplay.post || !onDisplay.comments) {
 			return (<Spinner color="#A4B3C1" size={10} />)
 		};
 
@@ -121,7 +138,6 @@ const mapStateToProps = (state: IRootState): IMapStateToProps => ({
 	isRequestingPostAndCommentDetails: selectIsRequestingPostAndCommentDetails(state),
 });
 
-
 /* *************************** */
 //    MAP DISPATCH TO PROPS    //
 /* *************************** */
@@ -138,6 +154,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => ({
 	submitComment: (comment) => dispatch(submitComment.started(comment)),
 	votePost: (postId, option) => dispatch(votePost.started({postId, option})),
 	voteComment: (commentId, option) => dispatch(voteComment.started({commentId, option})),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetailsPage);

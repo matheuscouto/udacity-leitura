@@ -1,12 +1,26 @@
 import * as React from 'react';
 
-// UTIL LIBS
+/* *************************** */
+//          UTIL LIBS          //
+/* *************************** */
+
 import { map } from 'lodash';
 
-// INTERFACES
+/* *************************** */
+//         INTERFACES          //
+/* *************************** */
+
 import { Comment as CommentType} from '../../declarations';
 
-import CommentItem from './CommentItem'
+/* *************************** */
+//     COMPONENTS IMPORTS      //
+/* *************************** */
+
+import CommentItem from './CommentItem';
+
+/* *************************** */
+//       COMPONENT PROPS       //
+/* *************************** */
 
 interface IProps {
 	commentCount: number;
@@ -15,6 +29,10 @@ interface IProps {
 	handleInputChange: (event: any) => void;
 	handleCommentSubmit: () => void;
 }
+
+/* *************************** */
+//       COMPONENT CLASS       //
+/* *************************** */
 
 class CommentList extends React.PureComponent<IProps> {
 	public render() {

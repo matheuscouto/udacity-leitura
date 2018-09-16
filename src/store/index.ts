@@ -2,7 +2,9 @@ import { Action, applyMiddleware, combineReducers, compose, createStore } from '
 import { ActionsObservable, combineEpics, createEpicMiddleware, StateObservable } from 'redux-observable';
 import { Observable } from 'rxjs';
 
-// REDUCERS AND EPICS EXPORTS
+/* **************************** */
+//  REDUCERS AND EPICS IMPORTS  //
+/* **************************** */
 
 import appStateReducer, {
 	epics as appStateEpics,
@@ -20,7 +22,9 @@ import forumPostsReducer, {
 	IState as IForumPostsState,
 } from './forum/posts';
 
-// STORE INTERFACE
+/* *************************** */
+//       STORE INTERFACE       //
+/* *************************** */
 
 export interface IRootState {
 	appState: IAppStateState,
@@ -28,7 +32,9 @@ export interface IRootState {
 	forumPosts: IForumPostsState,
 }
 
-// COMBINED REDUCERS
+/* *************************** */
+//      COMBINED REDUCERS      //
+/* *************************** */
 
 const rootReducer = combineReducers<IRootState>({
 	appState: appStateReducer,
@@ -36,7 +42,9 @@ const rootReducer = combineReducers<IRootState>({
 	forumPosts: forumPostsReducer,
 });
 
-// COMBINED EPICS
+/* ************************** */
+//       COMBINED EPICS       //
+/* ************************** */
 
 const rootEpic = combineEpics(
 	appStateEpics,
@@ -44,12 +52,16 @@ const rootEpic = combineEpics(
 	forumPostsEpics,
 );
 
-
+/* ************************** */
+//        TYPE EXPORTS        //
+/* ************************** */
 
 export type Epic = (action$: ActionsObservable<Action<any>>, state$: StateObservable<IRootState>) => Observable<Action<any>>;
 export type Selector<Value, Props = any> = (state: IRootState, props?: Props) => Value;
 
-
+/* ************************** */
+//          ENHANCERS         //
+/* ************************** */
 
 const epicMiddleware = createEpicMiddleware<any>();
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

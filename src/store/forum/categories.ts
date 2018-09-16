@@ -7,12 +7,21 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers/dist';
 import ApiSDK from '../../services/api';
 
 
-// ACTIONS
+/* *************************** */
+//       ACTIONS PREFIX        //
+/* *************************** */
 
 const actionCreator = actionCreatorFactory('FORUM::CATEGORIES');
+
+/* *************************** */
+//           ACTIONS           //
+/* *************************** */
+
 export const getCategories = actionCreator.async<undefined, string[], number>('GET_CATEGORIES');
 
-// STATE
+/* ********************************* */
+//  STATE INTERFACE & INITIAL STATE  //
+/* ********************************* */
 
 export interface IState {
 	categories?: string[]
@@ -20,13 +29,17 @@ export interface IState {
 
 const INITIAL_STATE: IState = {};
 
-// REDUCER
+/* *************************** */
+//           REDUCER           //
+/* *************************** */
 
 export default reducerWithInitialState(INITIAL_STATE)
 	.case(getCategories.done, (state: IState, { result: categories }) => ({ ...state, categories}))
 	.build();
 
-// EPICS
+/* *************************** */
+//            EPICS            //
+/* *************************** */
 
 const getCategoriesEpic: Epic = (action$) => action$.pipe(
 	filter(getCategories.started.match),

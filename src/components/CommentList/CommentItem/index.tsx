@@ -1,10 +1,20 @@
 import * as React from 'react';
 
-// UTIL LIBS
+/* *************************** */
+//          UTIL LIBS          //
+/* *************************** */
+
 import * as moment from 'moment';
 
-// INTERFACES
+/* *************************** */
+//         INTERFACES          //
+/* *************************** */
+
 import { Comment as CommentType } from '../../../declarations';
+
+/* *************************** */
+//     COMPONENT FUNCTION      //
+/* *************************** */
 
 const CommentItem:React.StatelessComponent<{ comment: CommentType }> = ({ comment }) => (
 	<div>

@@ -11,9 +11,15 @@ import { Epic, Selector } from '../';
 import ApiSDK from '../../services/api';
 
 
+/* *************************** */
+//       ACTIONS PREFIX        //
+/* *************************** */
+
 const actionCreator = actionCreatorFactory('FORUM::POSTS');
 
-// ACTIONS
+/* *************************** */
+//           ACTIONS           //
+/* *************************** */
 
 export const getPosts = actionCreator.async<undefined, PostType[], any>('GET_POSTS');
 export const getPostsByCategory = actionCreator.async<string, PostType[], any>('GET_POSTS_BY_CATEGORY');
@@ -30,8 +36,9 @@ export const getCommentDetails = actionCreator.async<string, CommentType, any>('
 export const editComment = actionCreator.async<{commentId:string, timestamp: number, body:string}, undefined, any>('EDIT_COMMENT');
 export const deleteComment = actionCreator.async<string, undefined, any>('DELETE_COMMENT');
 
-
-// STATE
+/* ********************************* */
+//  STATE INTERFACE & INITIAL STATE  //
+/* ********************************* */
 
 export interface IState {
 	isRequestingPostList: boolean;
@@ -66,14 +73,18 @@ const INITIAL_STATE: IState = {
 	onDisplay: {}
 };
 
-// SELECTORS
+/* *************************** */
+//          SELECTORS          //
+/* *************************** */
 
 export const selectAllPosts: Selector<any> = ({ forumPosts }) => forumPosts.posts;
 export const selectIsRequestingPostList: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostList;
 export const selectIsRequestingPostAndCommentDetails: Selector<boolean> = ({ forumPosts }) => forumPosts.isRequestingPostAndCommentDetails;
 export const selectPostOnDisplayWithComments: Selector<{post?: PostType, comments?: {[id: string]: CommentType }}> = ({ forumPosts }) => forumPosts.onDisplay;
 
-// REDUCER
+/* *************************** */
+//           REDUCER           //
+/* *************************** */
 
 export default reducerWithInitialState(INITIAL_STATE)
 	.case(getPosts.started, (state: IState) => ({ ...state, isRequestingPostList: true }))
@@ -125,7 +136,9 @@ export default reducerWithInitialState(INITIAL_STATE)
 	}))
 	.build();
 
-// EPICS
+/* *************************** */
+//            EPICS            //
+/* *************************** */
 
 const getPostsEpic: Epic = (action$) => action$.pipe(
 	filter(getPosts.started.match),
